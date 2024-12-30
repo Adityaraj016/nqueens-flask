@@ -56,12 +56,6 @@ class PSO:
             seen.add(position[i])
         return position
 
-        # In the worst case, the code will stop after `max_iter` iterations, which is set to 1000 by default. This is the maximum number of iterations allowed for the optimization process, and the algorithm will terminate once it reaches this limit, even if it has not found a perfect solution (zero conflicts).
-
-        # However, the algorithm could terminate earlier if it finds a solution with no conflicts (i.e., `global_best_score == 0`). If such a solution is found in any iteration, the code will output "Perfect solution found!" and stop.
-
-        # Therefore, in the worst case (when no perfect solution is found), the code will stop after 1000 iterations.
-
     def optimize(self):
         iteration = 0
         while iteration < self.max_iter:
@@ -79,7 +73,7 @@ class PSO:
             for i in range(self.swarm_size):
                 self.update_velocity(i)
                 self.update_position(i)
-        return self.global_best_position, self.global_best_score
+        return self.global_best_position, self.global_best_score, iteration
 
 @app.route('/')
 def index():
@@ -89,8 +83,8 @@ def index():
 def solve():
     n = int(request.json['n'])
     pso = PSO(n)
-    solution, conflicts = pso.optimize()
-    return jsonify({'solution': solution, 'conflicts': conflicts})
+    solution, conflicts, iterations = pso.optimize()
+    return jsonify({'solution': solution, 'conflicts': conflicts, 'iterations': iterations})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
