@@ -56,6 +56,12 @@ class PSO:
             seen.add(position[i])
         return position
 
+        # In the worst case, the code will stop after `max_iter` iterations, which is set to 1000 by default. This is the maximum number of iterations allowed for the optimization process, and the algorithm will terminate once it reaches this limit, even if it has not found a perfect solution (zero conflicts).
+
+        # However, the algorithm could terminate earlier if it finds a solution with no conflicts (i.e., `global_best_score == 0`). If such a solution is found in any iteration, the code will output "Perfect solution found!" and stop.
+
+        # Therefore, in the worst case (when no perfect solution is found), the code will stop after 1000 iterations.
+
     def optimize(self):
         iteration = 0
         while iteration < self.max_iter:
